@@ -6,9 +6,9 @@ def get_file_info(working_directory, file_path):
         absolute_path = os.path.abspath(os.path.join(working_directory, file_path))
 
         if not absolute_path.startswith(os.path.abspath(working_directory)):
-            raise Exception(f"Cannot read \"{file+path}\" as it is outside the permitted working directory")
+            raise Exception(f"Cannot read \"{file_path}\" as it is outside the permitted working directory")
 
-        if not is.path.isfile(absolute_path):
+        if not os.path.isfile(absolute_path):
             raise Exception(f"File not found or if not a regular file: \"{file_path}\" ")
 
         with open(file_path, "r") as file:
