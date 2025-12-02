@@ -1,5 +1,5 @@
 import os
-from os.path import isfile
+from config import MAX_CHARS
 
 def get_file_info(working_directory, file_path):
     try:
@@ -10,6 +10,9 @@ def get_file_info(working_directory, file_path):
 
         if not is.path.isfile(absolute_path):
             raise Exception(f"File not found or if not a regular file: \"{file_path}\" ")
+
+        with open(file_path, "r") as file:
+            file_content_string = file.read(MAX_CHARS)
 
     except Exception as e:
         return str(f"Error: {e}")
