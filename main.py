@@ -26,10 +26,10 @@ def main():
     )
 
     print(response.text)
-    
+
     if len(sys.argv) > 2 and sys.argv[2] == "--verbose":
         print(f"User prompt: {user_input}")
-        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count + 1}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 
 if __name__ == "__main__":

@@ -19,11 +19,11 @@ class TestGetFilesInfo(unittest.TestCase):
         "is_dir=",
         "file_size="
       ]
-      
+
       result = get_files_info("calculator", ".")
       self.assertContainsAll(result, expected)
       print(result)
-    
+
     def test_pkg_directory_in_calculator(self):
       expected = [
         "Result for 'pkg' directory",
