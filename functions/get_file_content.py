@@ -9,13 +9,13 @@ def get_file_content(working_directory, file_path):
             raise Exception(f"Cannot read \"{file_path}\" as it is outside the permitted working directory")
 
         if not os.path.isfile(absolute_path):
-            raise Exception(f"File not found or if not a regular file: \"{file_path}\" ")
+            raise Exception(f"File not found or is not a regular file: \"{file_path}\" ")
 
         with open(absolute_path, "r") as file:
             file_content_string = file.read()
 
         if len(file_content_string) > MAX_CHARS:
-            file_content_string = file_content_string[:10001] + trunc_message(file_path)
+            file_content_string = file_content_string[:10000] + trunc_message(file_path)
 
         return file_content_string
 
