@@ -4,11 +4,6 @@ from functions.get_file_content import get_file_content
 from config import MAX_CHARS, trunc_message
 
 class TestGetFileContent(unittest.TestCase):
-
-    def assertContainsAll(self, text, substrings):
-        for substring in substrings:
-            self.assertIn(substring, text)
-
     def setUp(self):
         self.working_directory = "calculator"
 
