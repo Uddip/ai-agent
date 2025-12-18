@@ -6,8 +6,23 @@ class TestRunPythonFile(unittest.TestCase):
         self.working_directory = "calculator"
 
     def test_print_usage_instructions_for_calculator(self):
+        file_path = "main.py"
+        expected = 'Usage: python main.py "<expression>"'
+
+        result = run_python_file(self.working_directory, file_path)
+
+        self.assertEqual(expected, result)
+        print(result)
 
     def test_run_calculator(self):
+        file_path = "main.py"
+        args = ["3 + 5"]
+        expected = '8'
+
+        result = run_python_file(self.working_directory, file_path, args)
+
+        self.assertIn(expected, result)
+        print(result)
 
     def test_run_calculator_tests(self):
 
@@ -17,3 +32,5 @@ class TestRunPythonFile(unittest.TestCase):
 
     def test_run_python_file_to_error_not_py_file(self):
 
+if __name__ == "__main__":
+    unittest.main()
