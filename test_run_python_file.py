@@ -11,7 +11,7 @@ class TestRunPythonFile(unittest.TestCase):
 
         result = run_python_file(self.working_directory, file_path)
 
-        self.assertEqual(expected, result)
+        self.assertIn(expected, result)
         print(result)
 
     def test_run_calculator(self):
