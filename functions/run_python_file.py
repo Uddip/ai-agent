@@ -14,7 +14,7 @@ def run_python_file(working_directory, file_path, args=[]):
         if not abs_file_path.endswith('.py'):
             raise Exception(f'"{file_path}" is not a Python file.')
 
-        completed_process = subprocess.run(['python', working_dir, file_path, args], timeout=30, capture_output=True)
+        completed_process = os.subprocess.run(['python', abs_working_dir, file_path, args], timeout=30, capture_output=True)
 
         if not completed_process:
             return f'No output produced'
