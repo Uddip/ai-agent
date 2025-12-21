@@ -1,23 +1,23 @@
 import os
-from config import MAX_CHARS, trunc_message
+from config import MAX_CHARS
 
 def get_file_content(working_directory, file_path):
     try:
-        absolute_path = os.path.abspath(os.path.join(working_directory, file_path))
+        abs_working_dir = os.path.abspath(working_directory)
+        abs_file_path = os.path.normpath(os.path.join(abs_working_dir, file_path))
 
-        if not absolute_path.startswith(os.path.abspath(working_directory)):
+        if not abs_file_path.startswith(abs_working_dir):
             raise Exception(f"Cannot read \"{file_path}\" as it is outside the permitted working directory")
 
-        if not os.path.isfile(absolute_path):
-            raise Exception(f"File not found or is not a regular file: \"{file_path}\" ")
+        if not os.path.isfile(abs_file_path):
+            raise Exception(f'File not found or is not a regular file: "{file_path}" ')
 
-        with open(absolute_path, "r") as file:
-            file_content_string = file.read()
+        with open(abs_file_path, "r") as file:
+            file_content = file.read(MAX_CHARS)
+            if file.read(1):
+                file_content += f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
 
-        if len(file_content_string) > MAX_CHARS:
-            file_content_string = file_content_string[:10000] + trunc_message(file_path)
-
-        return file_content_string
+        return file_content
 
     except Exception as e:
         return str(f"Error: {e}")

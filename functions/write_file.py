@@ -2,16 +2,18 @@ import os
 
 def write_file(working_directory, file_path, content):
     try:
-        absolute_path = os.path.abspath(os.path.join(working_directory, file_path))
+        abs_file_path = os.path.abspath(os.path.join(working_directory, file_path))
         working_directory_path = os.path.abspath(working_directory)
 
-        if not absolute_path.startswith(working_directory_path):
-            raise Exception(f'Error: Cannot write to "{file_path}" as it is outside the permitted working directory')
+        if not abs_file_path.startswith(working_directory_path):
+            raise Exception(f'Cannot write to "{file_path}" as it is outside the permitted working directory')
 
-        if not os.path.exists(absolute_path):
-            os.makedirs(os.path.dirname(absolute_path), exist_ok=True)
+        if os.path.isdir(abs_file_path):
+            return f'Cannot write to "{file_path}" as it is a directory'
+        
+        os.makedirs(os.path.dirname(abs_file_path), exist_ok=True)
 
-        with open(absolute_path, "w") as f:
+        with open(abs_file_path, "w") as f:
             f.write(content)
 
         return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'

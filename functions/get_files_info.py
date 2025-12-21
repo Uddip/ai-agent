@@ -1,27 +1,23 @@
 import os
 
 def get_files_info(working_directory, directory="."):
-  dir_name = 'current' if directory == '.' else f"'{directory}'"
-  header = (f"Result for {dir_name} directory:\n")
-  
   try:
-    absolute_path = os.path.abspath(os.path.join(working_directory, directory))
+    abs_working_dir = os.path.abspath(working_directory)
+    target_dir = os.path.normpath(os.path.join(abs_working_dir, directory))
 
-    if not absolute_path.startswith(os.path.abspath(working_directory)):
-      raise Exception(f"Cannot list \"{directory}\" as it is outside the permitted working directory")
+    if not target_dir.startswith(abs_working_dir):
+      raise Exception(f'Cannot list "{directory}" as it is outside the permitted working directory')
 
-    if not os.path.isdir(absolute_path):
-      raise Exception(f"{directory} is not a directory")
-
-    contents = sorted(os.listdir(absolute_path), key=lambda name: (os.path.isdir(os.path.join(absolute_path, name)), name.lower()))
+    if not os.path.isdir(target_dir):
+      raise Exception(f'"{directory}" is not a directory')
 
     report = []
 
-    for item in contents:
-      file_path = os.path.join(absolute_path + os.sep, item)
-      report.append(f" - {item}: file_size={os.path.getsize(file_path)} bytes, is_dir={os.path.isdir(file_path)}")
+    for file_name in os.listdir(target_dir):
+      file_path = os.path.join(target_dir, file_name)
+      report.append(f" - {file_name}: file_size={os.path.getsize(file_path)} bytes, is_dir={os.path.isdir(file_path)}")
     
-    return header + "\n".join(report)
+    return "\n".join(report)
   
   except Exception as e:
-    return str(f"{header}    Error: {e}")
+    return f"Error listing files: Error: {e}"
