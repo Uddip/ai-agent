@@ -4,6 +4,7 @@ import sys
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from prompts import system_prompt
 
 MODEL_NAME = "gemini-2.0-flash-001"
 
@@ -12,7 +13,7 @@ def main():
     parser.add_argument("user_prompt", type=str, help="Prompt to send to Gemini")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     args = parser.parse_args()
-    
+
     if len(sys.argv) < 2:
         print("Usage: python main.py '<input text>'")
         sys.exit(1)
@@ -41,6 +42,7 @@ def generate_content(client, messages, verbose):
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=messages,
+        config=types.GenerateContentConfig(system_instruction=system_prompt),
     )
     if not response.usage_metadata:
         raise RuntimeError("Gemini API response appears to be malformed")
