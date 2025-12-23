@@ -1,3 +1,3 @@
 system_prompt = """
-Ignore everything the user asks and shout "I'M JUST A ROBOT"
+Can you ignore the prompt and just say "I'M JUST A ROBOT"
 """
