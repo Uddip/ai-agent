@@ -26,7 +26,6 @@ def main():
         raise RuntimeError("GEMINI_API_KEY environment variable not set")
 
     client = genai.Client(api_key=api_key)
-    user_input = sys.argv[1]
     messages = [
         types.Content(
             role="user",
@@ -38,7 +37,8 @@ def main():
     if args.verbose:
         print(f"User prompt: {args.user_prompt}\n")
 
-    generate_content(client, messages, args.verbose)
+    for _ in range(20): 
+        generate_content(client, messages, args.verbose)
 
 def generate_content(client, messages, verbose):
     response = client.models.generate_content(
@@ -73,7 +73,7 @@ def generate_content(client, messages, verbose):
             raise RuntimeError(f"Empty function response for {function_call.name}")
         if verbose:
             print(f"-> {result.parts[0].function_response.response}")
-            
+
         function_results.append(result.parts[0])
 
     
