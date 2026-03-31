@@ -40,6 +40,7 @@ def main():
     for _ in range(20): 
         generate_content(client, messages, args.verbose)
 
+
 def generate_content(client, messages, verbose):
     response = client.models.generate_content(
         model="gemini-2.5-flash",
@@ -49,6 +50,11 @@ def generate_content(client, messages, verbose):
             system_instruction=system_prompt
         ),
     )
+
+    if response.candidates:
+        for candidate in response.candidates:
+            messages.append(candidate.content)
+
     if not response.usage_metadata:
         raise RuntimeError("Gemini API response appears to be malformed")
 
@@ -75,6 +81,11 @@ def generate_content(client, messages, verbose):
             print(f"-> {result.parts[0].function_response.response}")
 
         function_results.append(result.parts[0])
+
+    messages.append(types.Content(
+        role="user",
+        parts=function_results
+    ))
 
     
 
