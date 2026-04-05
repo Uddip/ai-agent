@@ -1,14 +1,16 @@
 import argparse
 import os
 import sys
+import time
 
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from config import GEMINI_2_0_FLASH
 from prompts import system_prompt
 from call_function import available_functions, call_function
 
-MODEL_NAME = "gemini-2.0-flash-001"
+MODEL = GEMINI_2_0_FLASH
 
 def main():
     parser = argparse.ArgumentParser(description="AI Code Assistant")
@@ -38,14 +40,17 @@ def main():
         print(f"User prompt: {args.user_prompt}\n")
 
     for _ in range(20): 
-        generate_content(client, messages, args.verbose)
+        if generate_content(client, messages, args.verbose):
+            break
+        time.sleep(2)
 
 
 def generate_content(client, messages, verbose):
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=MODEL,
         contents=messages,
         config=types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
             tools=[available_functions],
             system_instruction=system_prompt
         ),
@@ -65,7 +70,7 @@ def generate_content(client, messages, verbose):
     if not response.function_calls:
         print("Response:")
         print(response.text)
-        return
+        return True
     
     function_results = []
     
